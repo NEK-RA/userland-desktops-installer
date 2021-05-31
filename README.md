@@ -39,6 +39,7 @@ Why not android-code? I don't have android development expirience yet, so script
 
 ## Targets
 
+- [ ] Make bot interactive and non-interactive mode
 - [ ] Make script usable for Debian-based distros (Debian, Kali, Ubuntu and any other if such will be ever added)
 - [ ] Add support of Arch-based
 - [ ] Add support of Alpine
