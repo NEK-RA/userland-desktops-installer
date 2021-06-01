@@ -39,7 +39,23 @@ Why not android-code? I don't have android development expirience yet, so script
 
 ## Targets
 
-- [ ] Make bot interactive and non-interactive mode
+- [ ] Make both interactive and non-interactive mode
 - [ ] Make script usable for Debian-based distros (Debian, Kali, Ubuntu and any other if such will be ever added)
 - [ ] Add support of Arch-based
 - [ ] Add support of Alpine
+
+## Planned usage options
+
+- `-a`, `-add` - Add new desktop environment or window manager. Option just for non-interactive mode. Require also target name of DE/WM to add.
+Example: `python udi.py --add xfce`
+
+- `-r`, `--remove` - Remove any desktop environment or window manager. Option just for non-interactive mode. Require also target name of DE/WM to remove.
+Example: `python udi.py --remove twm`
+
+- `-h`, `--help` - Print usage help with description and all options
+
+- `-l`, `--list` - Print info about desktop environments and window managers which are planned and implemented
+
+- `-d`, `--disclaimer` - Disable disclaimer in current running. By default disclaimer will be shown on each running.
+
+- `-v`, `--version` - Show script version
