@@ -6,7 +6,7 @@ Simple script which will bring more desktop environments to UserLAnd from AnLinu
 
 I guess most of us knows about Termux ([F-Droid](https://f-droid.org/ru/packages/com.termux/), [Google Play](https://play.google.com/store/apps/details?id=com.termux))
 
-Most of us tried some Unix tools including some that doesn't works in Termux. I'm not sure if all of us also tried to run minimalistic linux containers here, but I guess again that most of us tried it thanks to AnLinux ([F-Droid](https://f-droid.org/ru/packages/exa.lnx.a/), [Google Play](https://play.google.com/store/apps/details?id=exa.lnx.a)) Finally someone([@CypherpunkArmory](https://github.com/CypherpunkArmory)) decided that it's not comfortable always switch between to apps is not comfortable and created UserLand ([F-Droid](https://f-droid.org/ru/packages/tech.ula/), [Google Play](https://play.google.com/store/apps/details?id=tech.ula))
+Most of us tried some Unix tools including some that doesn't works in Termux. I'm not sure if all of us also tried to run minimalistic linux containers here, but I guess again that most of us tried them thanks to AnLinux ([F-Droid](https://f-droid.org/ru/packages/exa.lnx.a/), [Google Play](https://play.google.com/store/apps/details?id=exa.lnx.a)) Finally someone([@CypherpunkArmory](https://github.com/CypherpunkArmory)) decided that it's not comfortable always switch between two apps and created UserLand ([F-Droid](https://f-droid.org/ru/packages/tech.ula/), [Google Play](https://play.google.com/store/apps/details?id=tech.ula))
 
 P.S.: I don't realy know what was the reason of UserLand creation. Writen above is just how I see that :D
 
@@ -25,7 +25,7 @@ Also provided some "Apps" options like installing LXDE/Xfce, Firefox, GIMP, InkS
 That's not the problem for software like browsers and etc, because:
 
 1. They can be installed easily from terminal
-2. Each base container packed with preinstalled TightVNC and TWM([Tab Window Manager](https://en.wikipedia.org/wiki/Twm))
+2. Each base container packed with preinstalled TightVNC and TWM([Tab Window Manager](https://en.wikipedia.org/wiki/Twm)) and they will be displayed normally
 
 But the changing the Desktop Environment is "more advanced" task for simple users. Also UserLand provides only LXDE and Xfce, while from AnLinux scripts we can get also Mate, LXQt, IceWM and Awesome.
 
