@@ -3,68 +3,117 @@ from sys import argv
 import texts
 
 # Flags section
-SHOW_DISCLAIMER = True
-INTERACTIVE = True
-ASKED_HELP = False
-ASKED_VERSION = False
+flags = dict ( 
+  SHOW_DISCLAIMER = True,
+  INTERACTIVE = True,
+  HELP = False,
+  VERSION = False,
+  LIST_DEWM = False,
+  ADD = False,
+  ADD_ID = "",
+  REMOVE = False,
+  REMOVE_ID = "",
+  ERROR = False,
+  ERROR_MSG = ""
+)
+
+arg_list = ("-r","--remove","-a","--add","-l","--list","-h","--help","-v","--version","-d","--disclaimer")
 
 def get_flags():
-  #removing scriptname from list
+  # Enabling global variables
+  global flags
+  # Removing scriptname from list
   argv.pop(0)
 
-  # Check for version args:
-  if ("-v" in argv) or ("--version" in argv):
-    global ASKED_VERSION
-    ASKED_VERSION = True
+  if len(argv) > 0:
+    while len(argv) > 0:
+      # Getting first element of list
+      arg = argv.pop(0)
+      
+      # If asked to print version
+      if arg=="-v" or arg=="--version":
+        flags["VERSION"] = True
+        break
+      
+      # If asked to print help
+      if arg == "-h" or arg == "--help":
+        flags["HELP"] = True
+        break
 
-  # Check for help args
-  if ("-h" in argv) or ("--help" in argv):
-    global ASKED_HELP 
-    ASKED_HELP = True
+      # If asked to print list of supported desktops and window managers
+      if arg == "-l" or arg == "--list":
+        flags["LIST_DEWM"] = True
+        break
 
-  # Decide what comes first in args
-  if ASKED_HELP == True and ASKED_VERSION == True:
-    version = -1
-    try:
-      version = argv.index("-v")
-    except ValueError:
-      version = argv.index("--version")
+      # If asked to not show disclaimer. Acceptable both for interactive and non-interactive modes
+      if arg == "-d" or arg == "--disclaimer":
+        flags["SHOW_DISCLAIMER"] = False
+        print("Disclaimer disabled for this run. If you want to see disclaimer, don't use -d or --disclaimer option")
+      
+      # If asked to remove old de/wm
+      if arg == "-r" or arg == "--remove":
+        flags["REMOVE"] = True
+        remove_id = argv.pop(0)
+        if remove_id not in arg_list:
+          flags["REMOVE_ID"] = remove_id
+          flags["INTERACTIVE"] = False
+        else:
+          flags["ERROR"] = True
+          flags["ERROR_MSG"] = "Another option specified, but name of desktop environment or window manager expected. Check what's going after -r or --remove option"
 
-    usage = -1
-    try:
-      usage = argv.index("-h")
-    except ValueError:
-      usage = argv.index("--help")
-
-    if version < usage :
-      ASKED_HELP = False
-    else:
-      ASKED_VERSION = False
-
-  # Check if disclaimer not needed
-  if ("-d" in argv) or ("--disclaimer" in argv):
-    global SHOW_DISCLAIMER
-    SHOW_DISCLAIMER = False
+      # If asked to add new de/wm
+      if arg == "-a" or arg == "--add":
+        flags["ADD"] = True
+        add_id = argv.pop(0)
+        if add_id not in arg_list:
+          flags["ADD_ID"] = add_id
+          flags["INTERACTIVE"] = False
+        else:
+          flags["ERROR"] = True
+          flags["ERROR_MSG"] = "Another option specified, but name of desktop environment or window manager expected. Check what's going after -a or --add"
 
 def chose_variant():
   chosen = input("Type number of your choice")
   print(chosen)
 
-def menu():
+def run_interactive():
   print(texts.menu)
 
 def run():
-  print("Asked version:" + str(ASKED_VERSION))
-  # Show script version and exit
-  if(ASKED_VERSION):
-    print("Script version: %s" % texts.version)
+  global flags
+  
+  # If got errors in --add or --remove options
+  if(flags["ERROR"]):
+    print(flags["ERROR_MSG"])
     exit()
-  print("Asked help:" + str(ASKED_HELP))
-  # Show usage help and exit
-  if(ASKED_HELP):
+  
+  # If user checking version of script
+  if(flags["VERSION"]):
+    print(texts.version)
+    exit()
+  
+  # If user looks for usage help
+  if(flags["HELP"]):
     print(texts.usage)
     exit()
   
+  # If using script interactive
+  if(flags["INTERACTIVE"]):
+    run_interactive()
+  else:
+    if(flags["REMOVE"]):
+      print("User wants to remove de/wm with id: "+flags["REMOVE_ID"])
+      # TODO: Check if remove_id exists in supported list
+      # TODO: Handle error if remove_id doesn't supported
+      # TODO: Remove selected de/wm if it's supported
+      # TODO: Detect if it realy installer before removing
+    
+    if(flags["ADD"]):
+      print("User want to add de/wm with id: "+flags["ADD_ID"])
+      # TODO: Check if add_id exists in supported list
+      # TODO: Handle error if add_id doesn't supported
+      # TODO: Add selected de/wm if it's supported
+      # TODO: Detect if it already installed
 
 
 get_flags()
