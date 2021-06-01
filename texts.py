@@ -60,3 +60,25 @@ OPTIONS
 
         -v, --version       Show script version
 """
+
+supported_de_wm = """
+Supported desktop environments and window managers from AnLinux:
+        Debian-based:
+                - Xfce4 (Recommended in AnLinux app)
+                - MATE
+                - LXQt
+                - LXDE
+                - Awesome
+                - IceWM
+        Arch:
+                - LXDE
+        Alpine:
+                none
+
+Implemented in script:
+        none
+
+By default in UserLAnd:
+        TWM
+
+"""
