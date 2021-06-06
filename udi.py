@@ -96,6 +96,11 @@ def run():
   if(flags["HELP"]):
     print(texts.usage)
     exit()
+
+  # If user looks for supported desktops
+  if(flags["LIST_DEWM"]):
+    print(texts.supported_de_wm)
+    exit()
   
   # If using script interactive
   if(flags["INTERACTIVE"]):
