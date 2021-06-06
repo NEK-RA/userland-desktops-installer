@@ -62,7 +62,13 @@ OPTIONS
 """
 
 supported_de_wm = """
-Supported desktop environments and window managers from AnLinux:
+Supported by UserLAnd-desktops-installer:
+        NONE
+
+By default in UserLAnd:
+        TWM
+
+Planned - supported desktop environments and window managers by AnLinux:
         Debian-based:
                 - Xfce4 (Recommended in AnLinux app)
                 - MATE
@@ -74,11 +80,4 @@ Supported desktop environments and window managers from AnLinux:
                 - LXDE
         Alpine:
                 none
-
-Implemented in script:
-        none
-
-By default in UserLAnd:
-        TWM
-
 """
