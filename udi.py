@@ -1,6 +1,7 @@
 from os import system
 from sys import argv
 import texts
+import desktops
 
 # Flags section
 flags = dict ( 
@@ -72,6 +73,11 @@ def get_flags():
           flags["ERROR"] = True
           flags["ERROR_MSG"] = "Another option specified, but name of desktop environment or window manager expected. Check what's going after -a or --add"
 
+def throw_error():
+  # TODO: This is a dumb way. Need to checkout later for good ways to throw errors
+  print(flags["ERROR_MSG"])
+  exit()
+
 def chose_variant():
   chosen = input("Type number of your choice")
   print(chosen)
@@ -84,8 +90,7 @@ def run():
   
   # If got errors in --add or --remove options
   if(flags["ERROR"]):
-    print(flags["ERROR_MSG"])
-    exit()
+    throw_error()
   
   # If user checking version of script
   if(flags["VERSION"]):
@@ -108,18 +113,21 @@ def run():
   else:
     if(flags["REMOVE"]):
       print("User wants to remove de/wm with id: "+flags["REMOVE_ID"])
-      # TODO: Check if remove_id exists in supported list
-      # TODO: Handle error if remove_id doesn't supported
-      # TODO: Remove selected de/wm if it's supported
-      # TODO: Detect if it realy installer before removing
+      if flags["REMOVE_ID"] in desktops.supported.keys():
+        print(flags["REMOVE_ID"]+" is supported!")
+        desktops.remove(flags["REMOVE_ID"])
+      else:
+        flags["ERROR_MSG"] = "Desktop "+str(flags["REMOVE_ID"])+" is NOT supported! Please run script with --list option to see all supported desktops"
+        throw_error()
     
     if(flags["ADD"]):
       print("User want to add de/wm with id: "+flags["ADD_ID"])
-      # TODO: Check if add_id exists in supported list
-      # TODO: Handle error if add_id doesn't supported
-      # TODO: Add selected de/wm if it's supported
-      # TODO: Detect if it already installed
-
+      if flags["ADD_ID"] in desktops.supported.keys():
+        print(flags["ADD_ID"]+" is supported!")
+        desktops.add(flags["ADD_ID"])
+      else:
+        flags["ERROR_MSG"] = "Desktop "+str(flags["REMOVE_ID"])+" is NOT supported! Please run script with --list option to see all supported desktops"
+        throw_error()
 
 get_flags()
 run()
