@@ -24,3 +24,18 @@ supported = dict(
   )
 
 )
+
+def add(id):
+  # TODO: Add selected de/wm if it's supported
+  # TODO: Detect if it already installed
+  # detect(id)
+  print("Adding " + id + "...")
+
+def remove(id):
+  # TODO: Remove selected de/wm if it's supported
+  # TODO: Detect if it realy installer before removing
+  # detect(id)
+  print("Removing " + id + "...")
+
+def detect(id):
+  print("Detecting " + id)
