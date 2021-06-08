@@ -1,4 +1,4 @@
-version = "1 (21-05-31)" # SCRIPT VERSION: {VERSION}
+version = "0.0" # SCRIPT VERSION: {VERSION}
 disclaimer= """
   ########################
   ##\t DISCLAIMER \t##
@@ -6,6 +6,9 @@ disclaimer= """
 
   This script officially published at:
   https://github.com/NEK-RA/userland-desktops-installer
+
+  Short link:
+  https://git.io/JZOqe
 
   If you got it from any other source - use it on your own risk. (or remove and get from official repository)
   
