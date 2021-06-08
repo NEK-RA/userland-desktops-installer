@@ -1,8 +1,14 @@
 from subprocess import run
 
-def shell(cmd):
-  out = run(cmd, shell=True, capture_output=True).stdout.decode("utf-8")
-  return out
+def shell(cmd,capture=False):
+  # by default capture=False to provide shell("command") which will print ot stdout result of execution
+  out = run(cmd, shell=True, capture_output=capture)
+  if capture:
+    print(out)
+    # Not sure if it will work as expected
+    # Expected that if stdout is empty then stderr shouln't be empty
+    # So if stdout is empty, then stderr should be printed and vice-versa
+    return out.stdout.decode("utf-8") or out.stderr.decode("utf-8")
 
 supported = dict(
 
@@ -57,7 +63,7 @@ def detected(package):
   # If I need exactly "package-name" whithout anything like "lib-something-package-name" or "package-name-plugin" and etc. (including substrings from description)
   # I'm searching exactly "^ii  package-name " which searchs from the line's start 
   # providing few symbols expected for line's start, then 2 spaces, then package name and finally one space to find exactly package-name
-  found_package = shell("dpkg -l | grep \"^ii  "+str(package)+" \"")
+  found_package = shell("dpkg -l | grep \"^ii  "+str(package)+" \"",True)
   if len(found_package) == 0:
     return 0
   else:
