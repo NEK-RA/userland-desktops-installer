@@ -66,8 +66,8 @@ OPTIONS
 
 supported_de_wm = """
 Supported by UserLAnd-desktops-installer:
-        TWM - Tab Window Manager (~2MB)
-        IceWM - Ice Window Manager (~30MB)
+        TWM - Tab Window Manager (~0.5MB archives, ~2MB finally used)
+        IceWM - Ice Window Manager (~6.5MB archives, ~30MB finally used)
 
 By default in UserLAnd:
         TWM

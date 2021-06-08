@@ -30,7 +30,6 @@ supported = dict(
   # ~30MB total space usage
   icewm = dict(
     packages2install = ["icewm","xfe"],
-    # not sure if packages2remove will be realy needed, or all other packages (like icewm-common) will be uninstalled on "apt autoremove"
     packages2remove = ["icewm", "icewm-common","xfe"],
     xstartup = """
     #!/bin/bash
@@ -45,9 +44,29 @@ def add(id):
   # TODO: Add selected de/wm if it's supported
   # TODO: Detect if it already installed
   if not detected(id):
-    print("Adding " + id + "...")
+    print(f"""
+    
+    Installing packages for {id}...
+
+    WARNING: At the next step script will run next commands for {id} packages:
+    "sudo apt update" to update repos
+    "sudo apt install" for each main package related to {id}
+
+    You will be asked for sudo password!
+
+    """)
+    canceled = False
+    for pkg in supported[id]["packages2install"]:
+      info = shell("sudo apt install "+pkg)
+      if info.returncode == 1:
+        canceled = True
+        break
+    if not canceled:
+      print(f"\n\n {id} desktop/window manager should be installed now. Stop your UserLAnd session and change it's protocol from SSH to VNC!")
+    else:
+      print(f"You canceled uninstallation of {id}")
   else:
-    print("Package "+str(id) + " is already installed! Skipping")
+    print(f"Looks like packages for {id} is already installed!")
 
 
 def remove(id):
@@ -66,14 +85,14 @@ def remove(id):
 
     """)
     canceled = False
-    for pkg in supported[id]["packages2install"]:
+    for pkg in supported[id]["packages2remove"]:
       info = shell("sudo apt purge "+pkg)
       if info.returncode == 1:
         canceled = True
         break
     if not canceled:
       shell("sudo apt autoremove -y")
-      print(f"\n\n All packages related to {id} should be removed for now. Restart your UserLAnd session before installing another one desktop!")
+      print(f"\n\nAll packages related to {id} should be removed for now. Restart your UserLAnd session before installing another one desktop!")
     else:
       print(f"You canceled uninstallation of {id}")
   else:
