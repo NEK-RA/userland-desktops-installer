@@ -1,4 +1,6 @@
 from subprocess import run
+from os.path import exists
+from os import access, X_OK
 
 def shell(cmd,capture=False):
   # by default capture=False to provide shell("command") which will print ot stdout result of execution
@@ -17,28 +19,56 @@ supported = dict(
     packages2install = ["twm"],
     packages2remove = ["twm"],
     xstartup = """
-    #!/bin/sh
-    xrdb $HOME/.Xresources
-    xsetroot -solid grey
-    #x-terminal-emulator -geometry 80x24+10+10 -ls -title "$VNCDESKTOP Desktop" &
-    #x-window-manager &
-    # Fix to make GNOME work
-    export XKL_XMODMAP_DISABLE=1
-    /etc/X11/Xsession
-    """
+#!/bin/sh
+xrdb $HOME/.Xresources
+xsetroot -solid grey
+#x-terminal-emulator -geometry 80x24+10+10 -ls -title "$VNCDESKTOP Desktop" &
+#x-window-manager &
+# Fix to make GNOME work
+export XKL_XMODMAP_DISABLE=1
+/etc/X11/Xsession
+    """.strip()
   ),
   # ~30MB total space usage
   icewm = dict(
     packages2install = ["icewm","xfe"],
     packages2remove = ["icewm", "icewm-common","xfe"],
     xstartup = """
-    #!/bin/bash
-    xrdb $HOME/.Xresources
-    icewm-session &
-    """
+#!/bin/bash
+xrdb $HOME/.Xresources
+icewm-session &
+    """.strip()
   )
 
 )
+
+def change_xstartup(content):
+  print("Changing xstartup")
+  # After checking that it's working fine, need to replace ./ with ~/
+  home = "./"
+  vnc = ".vnc/"
+  xstartup = "xstartup"
+  # Check if .vnc folder exists
+  # It should already exist in case of UserLAnd usage
+  # But it's not exist in case Termux + AnLinux
+  if not exists(home+vnc):
+    print("folder not found, creating")
+    shell(f"mkdir {home + vnc}")
+  # Check if xstartup exists
+  if exists(home+vnc+xstartup):
+    print("gonna change content of xstartup")
+  else:
+    print("gonna create xstartup")
+  # Change content of xstartup
+  with open(home+vnc+xstartup, mode="w") as xfile:
+    xfile.write(content)
+    print("File overwritten")
+  # Check if file may be executed and make it executable if not
+  if not access(home+vnc+xstartup, X_OK):
+    shell(f"chmod +x {home+vnc+xstartup}")
+  
+
+# TODO: Need to think about ~/.vncrc to control resolution for vnc sessions
 
 def add(id):
   # TODO: Add selected de/wm if it's supported
@@ -62,6 +92,7 @@ def add(id):
         canceled = True
         break
     if not canceled:
+      change_xstartup(supported[id]["xstartup"])
       print(f"\n\n {id} desktop/window manager should be installed now. Stop your UserLAnd session and change it's protocol from SSH to VNC!")
     else:
       print(f"You canceled uninstallation of {id}")
