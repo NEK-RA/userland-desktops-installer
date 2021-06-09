@@ -45,7 +45,7 @@ icewm-session &
 def change_xstartup(content):
   print("Changing xstartup")
   # After checking that it's working fine, need to replace ./ with ~/
-  home = "./"
+  home = "~/"
   vnc = ".vnc/"
   xstartup = "xstartup"
   # Check if .vnc folder exists
