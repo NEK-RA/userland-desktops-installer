@@ -1,17 +1,27 @@
-from subprocess import run
+from subprocess import run, PIPE
 from os.path import exists
 from os import access, X_OK
+from sys import version_info
 
 def shell(cmd,capture=False):
   # by default capture=False to provide shell("command") which will print ot stdout result of execution
-  out = run(cmd, shell=True, capture_output=capture)
-  if capture:
+  if not capture:
+    out = run(cmd, shell=True)
+    return out
+  else:
+    # UserLAnd 2.7.3 ubuntu container is "Ubuntu 18.04.5 LTS"
+    # In it's repos there is 3.6.9 version of Python, which doesn't have param capture_output
+    # So in version 3.5-3.6 need to use subprocess.PIPE value for std(in/out/err) to capture them
+    # In 3.7 already using capture_output=True
+    if version_info.minor >= 7:
+      out = run(cmd, shell=True, capture_output=True)
+    else:
+      out = run(cmd, shell=True, stdout=PIPE, stderr=PIPE)
     # Not sure if it will work as expected
     # Expected that if stdout is empty then stderr shouln't be empty
     # So if stdout is empty, then stderr should be printed and vice-versa
     return out.stdout.decode("utf-8") or out.stderr.decode("utf-8")
-  else:
-    return out
+      
 
 supported = dict(
   # ~2MB total space usage
