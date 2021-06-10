@@ -1,4 +1,3 @@
-from os import system
 from sys import argv
 import texts
 import desktops
