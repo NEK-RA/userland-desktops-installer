@@ -41,15 +41,34 @@ export XKL_XMODMAP_DISABLE=1
   ),
   # ~30MB total space usage
   icewm = dict(
-    packages2install = ["icewm","xfe"],
-    packages2remove = ["icewm", "icewm-common","xfe"],
+    packages2install = ["icewm"],
+    packages2remove = ["icewm", "icewm-common"],
     xstartup = """
 #!/bin/bash
 xrdb $HOME/.Xresources
 icewm-session &
     """.strip()
+  ),
+  # ~575MB total space usage
+  xfce = dict(
+    packages2install = ["xfce", "xfce4-terminal"],
+    packages2remove = ["xfce", "xfce4-terminal"],
+    xstartup = """
+#!/bin/sh
+xrdb $HOME/.Xresources
+startxfce4 &
+    """.strip()
+  ),
+  # ~922MB total space usage
+  lxde = dict(
+    packages2install = ["lxde"],
+    packages2remove = ["lxde"],
+    xstartup = """
+#!/bin/sh
+xrdb $HOME/.Xresources
+/usr/bin/startlxde &
+    """.strip()
   )
-
 )
 
 def change_xstartup(content):
@@ -95,8 +114,6 @@ def add(id,interact):
     WARNING: At the next step script will run next commands for {id} packages:
     "sudo apt update" to update repos
     "sudo apt install" for each main package related to {id}
-
-    You will be asked for sudo password!
 
     """)
     canceled = False
