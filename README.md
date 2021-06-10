@@ -39,8 +39,13 @@ Why not android-code? I don't have android development expirience yet, so script
 
 ## Targets
 
-- [ ] Make both interactive and non-interactive mode
-- [ ] Make script usable for Debian-based distros (Debian, Kali, Ubuntu and any other if such will be ever added)
+- [x] Make script usable for Debian-based distros (Debian, Kali, Ubuntu and any other if such will be ever added)
+Currently only Debian-based are supported because of direct usage of `apt`
+
+- [x] Make non-interactive mode
+Options for non-interactive usage are: add, switch and remove desktop
+
+- [ ] Make interactive mode
 - [ ] Add support of Arch-based
 - [ ] Add support of Alpine
 
@@ -51,6 +56,8 @@ Example: `python udi.py --add xfce`
 
 - `-r`, `--remove` - Remove any desktop environment or window manager. Option just for non-interactive mode. Require also target name of DE/WM to remove.
 Example: `python udi.py --remove twm`
+
+- `-s`, `--switch` - Switch xstartup file content to content specific for another desktop. For thoose who will keep few desktops installed and want a way to easily switch them.
 
 - `-h`, `--help` - Print usage help with description and all options
 

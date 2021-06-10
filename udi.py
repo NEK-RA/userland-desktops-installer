@@ -14,11 +14,13 @@ flags = dict (
   ADD_ID = "",
   REMOVE = False,
   REMOVE_ID = "",
+  SWITCH = False,
+  SWITCH_ID = "",
   ERROR = False,
   ERROR_MSG = ""
 )
 
-arg_list = ("-r","--remove","-a","--add","-l","--list","-h","--help","-v","--version","-d","--disclaimer")
+arg_list = ("-r","--remove","-a","--add","-l","--list","-h","--help","-v","--version","-d","--disclaimer","-s","--switch")
 
 def get_flags():
   # Enabling global variables
@@ -44,6 +46,18 @@ def get_flags():
       # If asked to print list of supported desktops and window managers
       if arg == "-l" or arg == "--list":
         flags["LIST_DEWM"] = True
+        break
+
+      # If asked to switch xstartup content to another one related to provided desktop
+      if arg == "-s" or arg == "--switch":
+        flags["SWITCH"] = True
+        switch_id = argv.pop(0)
+        if switch_id not in arg_list:
+          flags["SWITCH_ID"] = switch_id
+          flags["INTERACTIVE"] = False
+        else:
+          flags["ERROR"] = True
+          flags["ERROR_MSG"] = "Another option specified, but name of desktop environment or window manager expected. Check what's going after -s or --switch option"
         break
 
       # If asked to not show disclaimer. Acceptable both for interactive and non-interactive modes
@@ -111,6 +125,14 @@ def run():
   if(flags["INTERACTIVE"]):
     run_interactive()
   else:
+    if flags["SWITCH"]:
+      if flags["SWITCH_ID"] in desktops.supported.keys():
+        print("Switching xstartup content to " + flags["REMOVE_ID"])
+        desktops.switch(flags["SWITCH_ID"])
+      else:
+        flags["ERROR_MSG"] = f"Desktop  { flags['SWITCH_ID'] }  is NOT supported! Please run script with --list option to see all supported desktops"
+        throw_error()
+
     if(flags["REMOVE"]):
       print("User wants to remove de/wm with id: "+flags["REMOVE_ID"])
       if flags["REMOVE_ID"] in desktops.supported.keys():

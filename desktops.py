@@ -45,7 +45,7 @@ icewm-session &
 def change_xstartup(content):
   print("Changing xstartup")
   # After checking that it's working fine, need to replace ./ with ~/
-  home = "~/"
+  home = "/home/" + shell("whoami",True).replace("\n","") + "/"
   vnc = ".vnc/"
   xstartup = "xstartup"
   # Check if .vnc folder exists
@@ -53,22 +53,26 @@ def change_xstartup(content):
   # But it's not exist in case Termux + AnLinux
   if not exists(home+vnc):
     print("folder not found, creating")
-    shell(f"mkdir {home + vnc}")
-  # Check if xstartup exists
-  if exists(home+vnc+xstartup):
-    print("gonna change content of xstartup")
-  else:
-    print("gonna create xstartup")
-  # Change content of xstartup
+    shell(f"mkdir -p {home + vnc}")
+  if not exists( home + vnc + xstartup ):
+    shell(f"touch { home + vnc + xstartup }")
+  # Create (if needed) and change content of xstartup
   with open(home+vnc+xstartup, mode="w") as xfile:
     xfile.write(content)
-    print("File overwritten")
+    print("xstartup ready now!")
   # Check if file may be executed and make it executable if not
-  if not access(home+vnc+xstartup, X_OK):
-    shell(f"chmod +x {home+vnc+xstartup}")
+  if not access( home + vnc + xstartup, X_OK):
+    shell(f"chmod +x { home + vnc + xstartup }")
   
 
 # TODO: Need to think about ~/.vncrc to control resolution for vnc sessions
+
+def switch(id):
+  if detected(id):
+    change_xstartup(supported[id]["xstartup"])
+  else:
+    print(f"Looks like {id} is not installed in your system yet.")
+    exit()
 
 def add(id):
   # TODO: Add selected de/wm if it's supported

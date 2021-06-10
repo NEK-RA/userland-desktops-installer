@@ -60,6 +60,9 @@ OPTIONS
 
         -r, --remove        Remove existing desktop environment or window manager
                             Option for non-interactive usage. Should be used with one of the names listed by --list option
+        
+        -s, --switch        Switch xstartup file content to content specific for another desktop. For thoose who will keep
+                            few desktops installed and want a way to easily switch them.  
 
         -v, --version       Show script version
 """
