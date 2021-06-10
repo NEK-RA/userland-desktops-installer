@@ -136,7 +136,7 @@ def run():
       print("User wants to remove de/wm with id: "+flags["REMOVE_ID"])
       if flags["REMOVE_ID"] in desktops.supported.keys():
         print(flags["REMOVE_ID"]+" is supported!")
-        desktops.remove(flags["REMOVE_ID"])
+        desktops.remove(flags["REMOVE_ID"],flags["INTERACTIVE"])
       else:
         flags["ERROR_MSG"] = "Desktop "+str(flags["REMOVE_ID"])+" is NOT supported! Please run script with --list option to see all supported desktops"
         throw_error()
@@ -145,7 +145,7 @@ def run():
       print("User want to add de/wm with id: "+flags["ADD_ID"])
       if flags["ADD_ID"] in desktops.supported.keys():
         print(flags["ADD_ID"]+" is supported!")
-        desktops.add(flags["ADD_ID"])
+        desktops.add(flags["ADD_ID"],flags["INTERACTIVE"])
       else:
         flags["ERROR_MSG"] = "Desktop "+str(flags["REMOVE_ID"])+" is NOT supported! Please run script with --list option to see all supported desktops"
         throw_error()

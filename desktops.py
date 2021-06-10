@@ -84,7 +84,7 @@ def switch(id):
     print(f"Looks like {id} is not installed in your system yet.")
     exit()
 
-def add(id):
+def add(id,interact):
   # TODO: Add selected de/wm if it's supported
   # TODO: Detect if it already installed
   if not detected(id):
@@ -100,8 +100,11 @@ def add(id):
 
     """)
     canceled = False
+    install = "sudo apt install "
+    if not interact:
+      install += "-y "
     for pkg in supported[id]["packages2install"]:
-      info = shell("sudo apt install "+pkg)
+      info = shell(install + pkg)
       if info.returncode == 1:
         canceled = True
         break
@@ -114,7 +117,7 @@ def add(id):
     print(f"Looks like packages for {id} is already installed!")
 
 
-def remove(id):
+def remove(id, interact):
   # TODO: Remove selected de/wm if it's supported
   # TODO: Detect if it realy installer before removing
   if detected(id):
@@ -129,9 +132,12 @@ def remove(id):
     You will be asked for sudo password!
 
     """)
+    purge = "sudo apt purge "
+    if not interact:
+      purge += "-y "
     canceled = False
     for pkg in supported[id]["packages2remove"]:
-      info = shell("sudo apt purge "+pkg)
+      info = shell(purge + pkg)
       if info.returncode == 1:
         canceled = True
         break
