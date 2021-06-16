@@ -1,4 +1,4 @@
-from sys import argv
+from sys import argv, exit
 import texts
 import desktops
 
@@ -87,9 +87,12 @@ def get_flags():
           flags["ERROR_MSG"] = "Another option specified, but name of desktop environment or window manager expected. Check what's going after -a or --add"
 
 def throw_error():
-  # TODO: This is a dumb way. Need to checkout later for good ways to throw errors
-  print(flags["ERROR_MSG"])
-  exit()
+  # According to https://docs.python.org/3/library/sys.html#sys.exit
+  # > The standard way to exit is sys.exit(n)
+  # > The optional argument arg can be an integer giving the exit status (defaulting to zero), or another type of object.
+  # > ... and any other object is printed to stderr and results in an exit code of 1
+  # Imported exit from sys
+  exit(flags["ERROR_MSG"])
 
 def chose_variant():
   chosen = input("Type number of your choice")
@@ -133,21 +136,19 @@ def run():
         throw_error()
 
     if(flags["REMOVE"]):
-      print("User wants to remove de/wm with id: "+flags["REMOVE_ID"])
+      print(f"Removing de/wm with id: { flags['REMOVE_ID'] }")
       if flags["REMOVE_ID"] in desktops.supported.keys():
-        print(flags["REMOVE_ID"]+" is supported!")
-        desktops.remove(flags["REMOVE_ID"],flags["INTERACTIVE"])
+        desktops.remove(flags["REMOVE_ID"],False)
       else:
-        flags["ERROR_MSG"] = "Desktop "+str(flags["REMOVE_ID"])+" is NOT supported! Please run script with --list option to see all supported desktops"
+        flags["ERROR_MSG"] = f"Desktop { flags['REMOVE_ID'] } is NOT supported! Please run script with --list option to see all supported desktops"
         throw_error()
     
     if(flags["ADD"]):
-      print("User want to add de/wm with id: "+flags["ADD_ID"])
+      print(f"Adding de/wm with id: { flags['ADD_ID'] }")
       if flags["ADD_ID"] in desktops.supported.keys():
-        print(flags["ADD_ID"]+" is supported!")
-        desktops.add(flags["ADD_ID"],flags["INTERACTIVE"])
+        desktops.add(flags["ADD_ID"],False)
       else:
-        flags["ERROR_MSG"] = "Desktop "+str(flags["REMOVE_ID"])+" is NOT supported! Please run script with --list option to see all supported desktops"
+        flags["ERROR_MSG"] = f"Desktop { flags['ADD_ID'] } is NOT supported! Please run script with --list option to see all supported desktops"
         throw_error()
 
 get_flags()
