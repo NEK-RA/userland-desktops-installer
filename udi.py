@@ -94,12 +94,67 @@ def throw_error():
   # Imported exit from sys
   exit(flags["ERROR_MSG"])
 
-def chose_variant():
-  chosen = input("Type number of your choice")
-  print(chosen)
+def ask_choice(question,min,max):
+  # Printing menu (main or of selected variant)
+  print(question)
+  # Reading first answer
+  chosen_str = input("Your choice: ")
+  # Trying to convert it to int. If it isn't int, then -1 value will be used
+  try:
+    chosen = int(chosen_str)
+  except ValueError:
+    chosen = -1
+  # Checking if user's choice is one of menu items
+  # Looping input if it's not in required range
+  while chosen not in range(min,max+1):
+    chosen_str = input(f"\nIncorrect input. Choose between numbers above (from { min } to { max }): ")
+    try:
+      chosen = int(chosen_str)
+    except ValueError:
+      chosen = -1
+  # When received correct variant returning it's value
+  return chosen
 
 def run_interactive():
-  print(texts.menu)
+  # Printing menu and receiving choice
+  # Menu has items from 1 to 6 (checkout texts.py)
+  choice = ask_choice(texts.menu,1,6)
+  # Checking choice and run related menu
+
+  # User want to remove desktop
+  if choice == 1:
+    if(flags["SHOW_DISCLAIMER"]):
+      print(texts.disclaimer)
+    print("something")
+
+  # User want to add desktop
+  if choice == 2:
+    if(flags["SHOW_DISCLAIMER"]):
+      print(texts.disclaimer)
+    print("chosen add some desktop")
+
+  # User want to switch desktop
+  if choice == 3:
+    print("chosen switch desktop")
+    input("Finished switching. Press Enter to continue")
+    desktops.shell("clear")
+
+  # User want to see usage help
+  if choice == 4:
+    print(texts.usage)
+    input("Press Enter to continue")
+    desktops.shell("clear")
+
+  # User want to see disclaimer
+  if choice == 5:
+    print(texts.disclaimer)
+    input("Press Enter to continue")
+    desktops.shell("clear")
+  
+  if choice == 6:
+    # User want to exit script
+    print("Exiting. Thanks for usage :)")
+    exit(0)
 
 def run():
   global flags
@@ -111,26 +166,28 @@ def run():
   # If user checking version of script
   if(flags["VERSION"]):
     print(texts.version)
-    exit()
+    exit(0)
   
   # If user looks for usage help
   if(flags["HELP"]):
     print(texts.usage)
-    exit()
+    exit(0)
 
   # If user looks for supported desktops
   if(flags["LIST_DEWM"]):
     print(texts.supported_de_wm)
-    exit()
-  
+    exit(0)
+
   # If using script interactive
   if(flags["INTERACTIVE"]):
-    run_interactive()
+    # Running menu again after each task
+    while True:
+      run_interactive()
   else:
     if flags["SWITCH"]:
       if flags["SWITCH_ID"] in desktops.supported.keys():
         print("Switching xstartup content to " + flags["REMOVE_ID"])
-        desktops.switch(flags["SWITCH_ID"])
+        desktops.switch(flags["SWITCH_ID"],False)
       else:
         flags["ERROR_MSG"] = f"Desktop  { flags['SWITCH_ID'] }  is NOT supported! Please run script with --list option to see all supported desktops"
         throw_error()
@@ -151,5 +208,6 @@ def run():
         flags["ERROR_MSG"] = f"Desktop { flags['ADD_ID'] } is NOT supported! Please run script with --list option to see all supported desktops"
         throw_error()
 
-get_flags()
-run()
+if __name__ == '__main__':
+  get_flags()
+  run()

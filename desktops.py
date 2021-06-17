@@ -1,7 +1,8 @@
 from subprocess import run, PIPE
 from os.path import exists
 from os import access, X_OK
-from sys import version_info
+from sys import version_info, exit
+from udi import ask_choice
 
 def shell(cmd,capture=False):
   # by default capture=False to provide shell("command") which will print ot stdout result of execution
@@ -96,16 +97,29 @@ def change_xstartup(content):
 
 # TODO: Need to think about ~/.vncrc to control resolution for vnc sessions
 
-def switch(id):
-  if detected(id):
-    change_xstartup(supported[id]["xstartup"])
+def switch(id, interact):
+  if not interact:
+    if detected(id):
+      change_xstartup(supported[id]["xstartup"])
+    else:
+      print(f"Looks like {id} is not installed in your system yet.")
+      exit()
   else:
-    print(f"Looks like {id} is not installed in your system yet.")
-    exit()
+    print("Detecting installed desktops...")
+    detected_desktops = []
+    for name,desktop in supported.items():
+      if detected(desktop["packages2install"][0]):
+        detected_desktops.append(name)
+    print("Finally detected:")
+    for i in range(0,len(detected_desktops)):
+      print(f"{ i+1 }) { detected_desktops[i] }")
+    target = ask_choice("Number of item: ",1,len(detected_desktops))
+    target = target - 1
+    change_xstartup(supported[target]["xstartup"])
+    
+    
 
 def add(id,interact):
-  # TODO: Add selected de/wm if it's supported
-  # TODO: Detect if it already installed
   if not detected(id):
     print(f"""
     
@@ -135,8 +149,6 @@ def add(id,interact):
 
 
 def remove(id, interact):
-  # TODO: Remove selected de/wm if it's supported
-  # TODO: Detect if it realy installer before removing
   if detected(id):
     print(f"""
     
@@ -179,3 +191,5 @@ def detected(package):
     return False
   else:
     return True
+
+# TODO: detect package manager (apt/apk/pacman) to add support of other containers

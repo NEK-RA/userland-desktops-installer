@@ -18,7 +18,7 @@ disclaimer= """
   #############
   
   This script will use few system commands with SUDO. Especially for remove default TWM and to install packages with new desktop environment or window manager.
-  Script will directly run commands like "sudo apt ...", so if you don't believe to this script, you can open it with any text editor and search for "sudo"
+  Script will directly run commands like "sudo apt ...", so if you don't trust to this script, you can open it with any text editor and search for "sudo"
   
   """
 
@@ -27,8 +27,10 @@ UDI(userland-desktops-installer) version: {version}
 Available options:
 1) Remove old DE/WM
 2) Install new DE/WM
-3) Display help
-4) Exit
+3) Switch desktop for vnc sessions
+4) Display help
+5) Show disclaimer
+6) Exit
 """
 
 usage = """
