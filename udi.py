@@ -125,6 +125,7 @@ def run_interactive():
   if choice == 1:
     if(flags["SHOW_DISCLAIMER"]):
       print(texts.disclaimer)
+      input("Press Enter to continue")
     desktops.remove(None,True)
     input("Process finished. Press Enter to get back to main menu")
     desktops.shell("clear")
@@ -133,6 +134,7 @@ def run_interactive():
   if choice == 2:
     if(flags["SHOW_DISCLAIMER"]):
       print(texts.disclaimer)
+      input("Press Enter to continue")
     desktops.add(None,True)
     input("Process finished. Press Enter to get back to main menu")
     desktops.shell("clear")

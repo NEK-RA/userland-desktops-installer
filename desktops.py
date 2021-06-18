@@ -51,8 +51,8 @@ icewm-session &
   ),
   # ~575MB total space usage
   xfce = dict(
-    packages2install = ["xfce", "xfce4-terminal"],
-    packages2remove = ["xfce", "xfce4-terminal"],
+    packages2install = ["xfce4", "xfce4-terminal"],
+    packages2remove = ["xfce4", "xfce4-terminal"],
     xstartup = """
 #!/bin/sh
 xrdb $HOME/.Xresources
@@ -136,15 +136,17 @@ def switch(de_id, interact):
 def add(de_id,interact):
   if interact:
     installed = detect_all_installed()
-    print("Already installed:")
+    print("\nAlready installed:")
     if len(installed) == 0:
       print("- None")
     else:
+      for de in installed:
+        print(f"- { de }")
       available = []
       for de in supported.keys():
         if de not in installed:
           available.append(de)
-      print("Available to install:")
+      print("\nAvailable to install:")
       for i in range(0,len(available)):
         print(f"{ i+1 }) { available[i] }")
       target = ask_choice("Number of item or 0 to cancel: ",0,len(available))
@@ -199,8 +201,6 @@ def remove(de_id, interact):
     WARNING: At the next step script will run next commands for {de_id} packages:
     "sudo apt purge" for each main package
     "sudo apt autoremove -y" after removing main packages to remove also autoinstalled
-
-    You will be asked for sudo password!
 
     """)
     purge = "sudo apt purge "
