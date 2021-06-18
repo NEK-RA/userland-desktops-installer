@@ -159,7 +159,6 @@ def add(de_id,interact):
     Installing packages for {de_id}...
 
     WARNING: At the next step script will run next commands for {de_id} packages:
-    "sudo apt update" to update repos
     "sudo apt install" for each main package related to {de_id}
 
     """)
