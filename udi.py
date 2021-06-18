@@ -125,30 +125,35 @@ def run_interactive():
   if choice == 1:
     if(flags["SHOW_DISCLAIMER"]):
       print(texts.disclaimer)
-    print("something")
+    desktops.remove(None,True)
+    input("Process finished. Press Enter to get back to main menu")
+    desktops.shell("clear")
 
   # User want to add desktop
   if choice == 2:
     if(flags["SHOW_DISCLAIMER"]):
       print(texts.disclaimer)
-    print("chosen add some desktop")
+    desktops.add(None,True)
+    input("Process finished. Press Enter to get back to main menu")
+    desktops.shell("clear")
 
   # User want to switch desktop
   if choice == 3:
-    print("chosen switch desktop")
-    input("Finished switching. Press Enter to continue")
+    # None for value to switch due to interactivity. True is for interactive mode
+    desktops.switch(None,True)
+    input("Finished switching. Press Enter to get back to main menu")
     desktops.shell("clear")
 
   # User want to see usage help
   if choice == 4:
     print(texts.usage)
-    input("Press Enter to continue")
+    input("Press Enter to get back to main menu")
     desktops.shell("clear")
 
   # User want to see disclaimer
   if choice == 5:
     print(texts.disclaimer)
-    input("Press Enter to continue")
+    input("Press Enter to get back to main menu")
     desktops.shell("clear")
   
   if choice == 6:

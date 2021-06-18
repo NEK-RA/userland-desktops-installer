@@ -23,7 +23,6 @@ def shell(cmd,capture=False):
     # So if stdout is empty, then stderr should be printed and vice-versa
     return out.stdout.decode("utf-8") or out.stderr.decode("utf-8")
       
-
 supported = dict(
   # ~2MB total space usage
   twm = dict(
@@ -94,90 +93,6 @@ def change_xstartup(content):
   if not access( home + vnc + xstartup, X_OK):
     shell(f"chmod +x { home + vnc + xstartup }")
   
-
-# TODO: Need to think about ~/.vncrc to control resolution for vnc sessions
-
-def switch(id, interact):
-  if not interact:
-    if detected(id):
-      change_xstartup(supported[id]["xstartup"])
-    else:
-      print(f"Looks like {id} is not installed in your system yet.")
-      exit()
-  else:
-    print("Detecting installed desktops...")
-    detected_desktops = []
-    for name,desktop in supported.items():
-      if detected(desktop["packages2install"][0]):
-        detected_desktops.append(name)
-    print("Finally detected:")
-    for i in range(0,len(detected_desktops)):
-      print(f"{ i+1 }) { detected_desktops[i] }")
-    target = ask_choice("Number of item: ",1,len(detected_desktops))
-    target = target - 1
-    change_xstartup(supported[target]["xstartup"])
-    
-    
-
-def add(id,interact):
-  if not detected(id):
-    print(f"""
-    
-    Installing packages for {id}...
-
-    WARNING: At the next step script will run next commands for {id} packages:
-    "sudo apt update" to update repos
-    "sudo apt install" for each main package related to {id}
-
-    """)
-    canceled = False
-    install = "sudo apt install "
-    if not interact:
-      install += "-y "
-    for pkg in supported[id]["packages2install"]:
-      info = shell(install + pkg)
-      if info.returncode == 1:
-        canceled = True
-        break
-    if not canceled:
-      change_xstartup(supported[id]["xstartup"])
-      print(f"\n\n {id} desktop/window manager should be installed now. Stop your UserLAnd session and change it's protocol from SSH to VNC!")
-    else:
-      print(f"You canceled uninstallation of {id}")
-  else:
-    print(f"Looks like packages for {id} is already installed!")
-
-
-def remove(id, interact):
-  if detected(id):
-    print(f"""
-    
-    Removing main packages of {id}...
-
-    WARNING: At the next step script will run next commands for {id} packages:
-    "sudo apt purge" for each main package
-    "sudo apt autoremove -y" after removing main packages to remove also autoinstalled
-
-    You will be asked for sudo password!
-
-    """)
-    purge = "sudo apt purge "
-    if not interact:
-      purge += "-y "
-    canceled = False
-    for pkg in supported[id]["packages2remove"]:
-      info = shell(purge + pkg)
-      if info.returncode == 1:
-        canceled = True
-        break
-    if not canceled:
-      shell("sudo apt autoremove -y")
-      print(f"\n\nAll packages related to {id} should be removed for now. Restart your UserLAnd session before installing another one desktop!")
-    else:
-      print(f"You canceled uninstallation of {id}")
-  else:
-    print(f"Package {id} is not installed! Nothing to remove!")
-
 def detected(package):
   # Searching on debian based systems through dpkg. 
   # Packages installed with "apt install package-name" are listed as "ii  package-name" and some additional info in table-like interface
@@ -192,4 +107,118 @@ def detected(package):
   else:
     return True
 
+def detect_all_installed():
+  # Returning list of all detected desktops. 
+  detected_desktops = []
+  for name,desktop in supported.items():
+    if detected(desktop["packages2install"][0]):
+      detected_desktops.append(name)
+  return detected_desktops
+
+def switch(de_id, interact):
+  if not interact:
+    if detected(de_id):
+      change_xstartup(supported[de_id]["xstartup"])
+    else:
+      print(f"Looks like {de_id} is not installed in your system yet.")
+      exit()
+  else:
+    print("Detecting installed desktops...")
+    detected_desktops = detect_all_installed()
+    print("Finally detected:")
+    for i in range(0,len(detected_desktops)):
+      print(f"{ i+1 }) { detected_desktops[i] }")
+    target = ask_choice("Number of item or 0 to cancel: ",0,len(detected_desktops))
+    if target == 0:
+      return
+    change_xstartup(supported[detected_desktops[target - 1]]["xstartup"])
+
+def add(de_id,interact):
+  if interact:
+    installed = detect_all_installed()
+    print("Already installed:")
+    if len(installed) == 0:
+      print("- None")
+    else:
+      available = []
+      for de in supported.keys():
+        if de not in installed:
+          available.append(de)
+      print("Available to install:")
+      for i in range(0,len(available)):
+        print(f"{ i+1 }) { available[i] }")
+      target = ask_choice("Number of item or 0 to cancel: ",0,len(available))
+      if target == 0:
+        return
+      de_id = available[target - 1]
+  if not detected(de_id):
+    print(f"""
+    
+    Installing packages for {de_id}...
+
+    WARNING: At the next step script will run next commands for {de_id} packages:
+    "sudo apt update" to update repos
+    "sudo apt install" for each main package related to {de_id}
+
+    """)
+    canceled = False
+    install = "sudo apt install "
+    if not interact:
+      install += "-y "
+    for pkg in supported[de_id]["packages2install"]:
+      info = shell(install + pkg)
+      if info.returncode == 1:
+        canceled = True
+        break
+    if not canceled:
+      change_xstartup(supported[de_id]["xstartup"])
+      print(f"\n\n {de_id} desktop/window manager should be installed now. Stop your UserLAnd session and change it's protocol from SSH to VNC!")
+    else:
+      print(f"You canceled uninstallation of {de_id}")
+  else:
+    print(f"Looks like packages for {de_id} is already installed!")
+
+def remove(de_id, interact):
+  if interact:
+    installed = detect_all_installed()
+    print("Already installed:")
+    if len(installed) == 0:
+      print("- None")
+    else:
+      for i in range(0,len(installed)):
+        print(f"{ i+1 }) { installed[i] }")
+      target = ask_choice("Number of item or 0 to cancel: ",0,len(installed))
+      if target == 0:
+        return
+      de_id = installed[target - 1]
+  if detected(de_id):
+    print(f"""
+    
+    Removing main packages of {de_id}...
+
+    WARNING: At the next step script will run next commands for {de_id} packages:
+    "sudo apt purge" for each main package
+    "sudo apt autoremove -y" after removing main packages to remove also autoinstalled
+
+    You will be asked for sudo password!
+
+    """)
+    purge = "sudo apt purge "
+    if not interact:
+      purge += "-y "
+    canceled = False
+    for pkg in supported[de_id]["packages2remove"]:
+      info = shell(purge + pkg)
+      if info.returncode == 1:
+        canceled = True
+        break
+    if not canceled:
+      shell("sudo apt autoremove -y")
+      print(f"\n\nAll packages related to {de_id} should be removed for now. Restart your UserLAnd session before installing another one desktop!")
+    else:
+      print(f"You canceled uninstallation of {de_id}")
+  else:
+    print(f"Package {de_id} is not installed! Nothing to remove!")
+
 # TODO: detect package manager (apt/apk/pacman) to add support of other containers
+# TODO: Need to think about ~/.vncrc to control resolution for vnc sessions
