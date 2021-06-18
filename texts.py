@@ -73,7 +73,7 @@ supported_de_wm = """
 Supported by UserLAnd-desktops-installer:
         WORKING:
                 TWM - Tab Window Manager (~0.5MB archives, ~2MB finally used)
-                IceWM - Ice Window Manager (~6.5MB archives, ~30MB finally used)
+                IceWM - Ice Window Manager (~30MB archives, ~125MB finally used)
         TESTING:
                 LXDE - Lightweight X11 Desktop Environment (~253MB archives, ~922MB finally used)
                 Xfce4 - Desktop Environment (~155MB archives, ~575MB finally used)
