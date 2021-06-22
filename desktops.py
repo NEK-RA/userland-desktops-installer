@@ -37,7 +37,8 @@ xsetroot -solid grey
 # Fix to make GNOME work
 export XKL_XMODMAP_DISABLE=1
 /etc/X11/Xsession
-    """.strip()
+    """.strip(),
+    space = "(~0.5MB archives, ~2MB finally used)"
   ),
   # ~30MB total space usage
   icewm = dict(
@@ -47,7 +48,8 @@ export XKL_XMODMAP_DISABLE=1
 #!/bin/bash
 xrdb $HOME/.Xresources
 icewm-session &
-    """.strip()
+    """.strip(),
+    space = "(~30MB archives, ~125MB finally used)"
   ),
   # ~575MB total space usage
   xfce = dict(
@@ -57,7 +59,8 @@ icewm-session &
 #!/bin/sh
 xrdb $HOME/.Xresources
 startxfce4 &
-    """.strip()
+    """.strip(),
+    space = "(~155MB archives, ~575MB finally used)"
   ),
   # ~922MB total space usage
   lxde = dict(
@@ -67,7 +70,18 @@ startxfce4 &
 #!/bin/sh
 xrdb $HOME/.Xresources
 /usr/bin/startlxde &
-    """.strip()
+    """.strip(),
+    space = "(~253MB archives, ~922MB finally used)"
+  ),
+  awesome = dict(
+    packages2install = ["awesome"],
+    packages2remove = ["awesome"],
+    xstartup = """
+#!/bin/bash
+xrdb $HOME/.Xresources
+awesome &
+    """.strip(),
+    space = "(~?MB archives, ~?MB finally used)"
   )
 )
 
@@ -148,7 +162,7 @@ def add(de_id,interact):
           available.append(de)
       print("\nAvailable to install:")
       for i in range(0,len(available)):
-        print(f"{ i+1 }) { available[i] }")
+        print(f"{ i+1 }) { available[i] } {supported[available[i]]['space']}")
       target = ask_choice("Number of item or 0 to cancel: ",0,len(available))
       if target == 0:
         return

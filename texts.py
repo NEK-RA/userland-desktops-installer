@@ -80,7 +80,7 @@ Supported by UserLAnd-desktops-installer:
                 Xfce4 - Desktop Environment (~155MB archives, ~575MB finally used)
                 LXDE - Lightweight X11 Desktop Environment (~253MB archives, ~922MB finally used)
         TESTING:
-                None                
+                Awesome - Awesome Window Manager (?MB archives, ?MB finally used)                
 
 By default in UserLAnd:
         TWM
@@ -93,5 +93,5 @@ Planned - supported desktop environments and window managers by AnLinux:
         Arch:
                 - LXDE
         Alpine:
-                none
+                None - Alpine doesn't exist as base for any DE or WM in AnLinux
 """
