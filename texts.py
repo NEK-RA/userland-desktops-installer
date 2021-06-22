@@ -71,24 +71,25 @@ OPTIONS
 
 supported_de_wm = """
 Supported by UserLAnd-desktops-installer:
+        About testing:
+                All desktops tested at Ubuntu only for now.
+
         WORKING:
                 TWM - Tab Window Manager (~0.5MB archives, ~2MB finally used)
                 IceWM - Ice Window Manager (~30MB archives, ~125MB finally used)
-        TESTING:
-                LXDE - Lightweight X11 Desktop Environment (~253MB archives, ~922MB finally used)
                 Xfce4 - Desktop Environment (~155MB archives, ~575MB finally used)
+                LXDE - Lightweight X11 Desktop Environment (~253MB archives, ~922MB finally used)
+        TESTING:
+                None                
 
 By default in UserLAnd:
         TWM
 
 Planned - supported desktop environments and window managers by AnLinux:
         Debian-based:
-                - Xfce4 (Recommended in AnLinux app)
                 - MATE
                 - LXQt
-                - LXDE
                 - Awesome
-                - IceWM
         Arch:
                 - LXDE
         Alpine:
