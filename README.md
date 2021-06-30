@@ -2,11 +2,13 @@
 
 Simple script which will bring more desktop environments to UserLAnd from AnLinux
 
+P.S.: Currently for Debian-based UserLAnd distros only, testing in Ubuntu UserLAnd
+
 ## Intro
 
-I guess most of us knows about Termux ([F-Droid](https://f-droid.org/ru/packages/com.termux/), [Google Play](https://play.google.com/store/apps/details?id=com.termux))
+I guess most of us knows about Termux ([Github](https://github.com/termux/termux-app), [F-Droid](https://f-droid.org/ru/packages/com.termux/), [Google Play](https://play.google.com/store/apps/details?id=com.termux))
 
-Most of us tried some Unix tools including some that doesn't works in Termux. I'm not sure if all of us also tried to run minimalistic linux containers here, but I guess again that most of us tried them thanks to AnLinux ([F-Droid](https://f-droid.org/ru/packages/exa.lnx.a/), [Google Play](https://play.google.com/store/apps/details?id=exa.lnx.a)) Finally someone([@CypherpunkArmory](https://github.com/CypherpunkArmory)) decided that it's not comfortable always switch between two apps and created UserLand ([F-Droid](https://f-droid.org/ru/packages/tech.ula/), [Google Play](https://play.google.com/store/apps/details?id=tech.ula))
+Most of us tried some Unix tools including some that doesn't works in Termux. I'm not sure if all of us also tried to run minimalistic linux containers here, but I guess again that most of us tried them thanks to AnLinux ([Github](https://github.com/EXALAB/AnLinux-Adfree), [F-Droid](https://f-droid.org/ru/packages/exa.lnx.a/), [Google Play](https://play.google.com/store/apps/details?id=exa.lnx.a)) Finally (as I guess) [@CypherpunkArmory](https://github.com/CypherpunkArmory) decided that it's not comfortable always switch between two apps and created UserLand ([Github](https://github.com/CypherpunkArmory/UserLAnd), [F-Droid](https://f-droid.org/ru/packages/tech.ula/), [Google Play](https://play.google.com/store/apps/details?id=tech.ula))
 
 P.S.: I don't realy know what was the reason of UserLand creation. Writen above is just how I see that :D
 
