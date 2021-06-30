@@ -75,12 +75,12 @@ Supported by UserLAnd-desktops-installer:
                 All desktops tested at Ubuntu only for now.
 
         WORKING:
-                TWM - Tab Window Manager (~0.5MB archives, ~2MB finally used)
-                IceWM - Ice Window Manager (~30MB archives, ~125MB finally used)
-                Xfce4 - Desktop Environment (~155MB archives, ~575MB finally used)
-                LXDE - Lightweight X11 Desktop Environment (~253MB archives, ~922MB finally used)
+                TWM - Tab Window Manager
+                IceWM - Ice Window Manager
+                Xfce4 - Desktop Environment
+                LXDE - Lightweight X11 Desktop Environment
         TESTING:
-                Awesome - Awesome Window Manager (?MB archives, ?MB finally used)                
+                Awesome - Awesome Window Manager. Failed to start on Ubuntu, Debian. Started successfully on Kali only.                
 
 By default in UserLAnd:
         TWM

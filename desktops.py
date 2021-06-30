@@ -24,7 +24,6 @@ def shell(cmd,capture=False):
     return out.stdout.decode("utf-8") or out.stderr.decode("utf-8")
       
 supported = dict(
-  # ~2MB total space usage
   twm = dict(
     packages2install = ["twm"],
     packages2remove = ["twm"],
@@ -37,10 +36,8 @@ xsetroot -solid grey
 # Fix to make GNOME work
 export XKL_XMODMAP_DISABLE=1
 /etc/X11/Xsession
-    """.strip(),
-    space = "(~0.5MB archives, ~2MB finally used)"
+    """.strip()
   ),
-  # ~30MB total space usage
   icewm = dict(
     packages2install = ["icewm"],
     packages2remove = ["icewm", "icewm-common"],
@@ -48,10 +45,8 @@ export XKL_XMODMAP_DISABLE=1
 #!/bin/bash
 xrdb $HOME/.Xresources
 icewm-session &
-    """.strip(),
-    space = "(~30MB archives, ~125MB finally used)"
+    """.strip()
   ),
-  # ~575MB total space usage
   xfce = dict(
     packages2install = ["xfce4", "xfce4-terminal"],
     packages2remove = ["xfce4", "xfce4-terminal"],
@@ -59,10 +54,8 @@ icewm-session &
 #!/bin/sh
 xrdb $HOME/.Xresources
 startxfce4 &
-    """.strip(),
-    space = "(~155MB archives, ~575MB finally used)"
+    """.strip()
   ),
-  # ~922MB total space usage
   lxde = dict(
     packages2install = ["lxde"],
     packages2remove = ["lxde"],
@@ -70,19 +63,19 @@ startxfce4 &
 #!/bin/sh
 xrdb $HOME/.Xresources
 /usr/bin/startlxde &
-    """.strip(),
-    space = "(~253MB archives, ~922MB finally used)"
-  ),
-  awesome = dict(
-    packages2install = ["awesome"],
-    packages2remove = ["awesome"],
-    xstartup = """
-#!/bin/bash
-xrdb $HOME/.Xresources
-awesome &
-    """.strip(),
-    space = "(~?MB archives, ~?MB finally used)"
+    """.strip()
   )
+  # Awesome WM commented as it failed to launch at least on ARMHF CPU on Debian, Ubuntu
+  # Successfull launch was only on Kali
+#   awesome = dict(
+#     packages2install = ["awesome"],
+#     packages2remove = ["awesome"],
+#     xstartup = """
+# #!/bin/bash
+# xrdb $HOME/.Xresources
+# awesome &
+#     """.strip()
+#   )
 )
 
 def change_xstartup(content):
@@ -151,22 +144,25 @@ def add(de_id,interact):
   if interact:
     installed = detect_all_installed()
     print("\nAlready installed:")
+    available = []
     if len(installed) == 0:
       print("- None")
+      for de in supported.keys():
+        available.append(de)
     else:
       for de in installed:
         print(f"- { de }")
-      available = []
       for de in supported.keys():
         if de not in installed:
           available.append(de)
-      print("\nAvailable to install:")
-      for i in range(0,len(available)):
-        print(f"{ i+1 }) { available[i] } {supported[available[i]]['space']}")
-      target = ask_choice("Number of item or 0 to cancel: ",0,len(available))
-      if target == 0:
-        return
-      de_id = available[target - 1]
+    print(available)
+    print("\nAvailable to install:")
+    for i in range(0,len(available)):
+      print(f"{ i+1 }) { available[i] } {supported[available[i]]['space']}")
+    target = ask_choice("Number of item or 0 to cancel: ",0,len(available))
+    if target == 0:
+      return
+    de_id = available[target - 1]
   if not detected(de_id):
     print(f"""
     
@@ -199,6 +195,7 @@ def remove(de_id, interact):
     print("Already installed:")
     if len(installed) == 0:
       print("- None")
+      return
     else:
       for i in range(0,len(installed)):
         print(f"{ i+1 }) { installed[i] }")
