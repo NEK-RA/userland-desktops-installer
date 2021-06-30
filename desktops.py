@@ -155,10 +155,9 @@ def add(de_id,interact):
       for de in supported.keys():
         if de not in installed:
           available.append(de)
-    print(available)
     print("\nAvailable to install:")
     for i in range(0,len(available)):
-      print(f"{ i+1 }) { available[i] } {supported[available[i]]['space']}")
+      print(f"{ i+1 }) { available[i] }")
     target = ask_choice("Number of item or 0 to cancel: ",0,len(available))
     if target == 0:
       return
